@@ -1,4 +1,4 @@
-package com.efub.clone.googledrive.domain.entity;
+package com.efub.clone.googledrive.domain.file;
 
 import lombok.Getter;
 

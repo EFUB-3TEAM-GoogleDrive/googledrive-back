@@ -3,3 +3,4 @@
 /build/
 /gradle/
 /lib/
+/src/main/resources/application-datasource.yml

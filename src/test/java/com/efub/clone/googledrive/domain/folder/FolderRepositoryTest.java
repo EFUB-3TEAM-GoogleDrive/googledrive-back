@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -28,7 +30,7 @@ class FolderRepositoryTest {
     }
 
     @Test
-    public void 데이터주입테스트(){
+    public void 폴더저장_불러오기(){
         //given
         String folderName = "testfolder";
 
@@ -40,12 +42,16 @@ class FolderRepositoryTest {
 
         userRepository.save(user);
 
-        Folder entity = Folder.builder().folderName(folderName).user(user).build();
+        folderRepository.save(Folder.builder()
+                .folderName(folderName)
+                .user(user)
+                .build());
 
         //when
-        Folder folder = folderRepository.save(entity);
+        List<Folder> folders = folderRepository.findAll();
 
         //then
+        Folder folder = folders.get(0);
         assertThat(folder.getFolderName()).isEqualTo(folderName);
         assertThat(folder.getUser().getUserId()).isEqualTo(user.getUserId());
     }

@@ -1,4 +1,8 @@
 spring:
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
   jpa:
     database: mysql
     properties:
@@ -8,14 +12,17 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: 'true'
-        use_sql_comments: 'true'
-        format_sql: 'true'
-        show_sql: 'true'
-    hibernate:
-      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username:
-    password:
-    url:
+  profiles:
+    include: datasource
+multipart:
+  maxFileSize: 5MB
+  maxRequestSize: 5MB
+cloud:
+  aws:
+    s3:
+      bucket: googledrive-file
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: 'false'

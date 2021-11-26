@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RequiredArgsConstructor
 @Service
 public class FileService {
@@ -39,5 +40,13 @@ public class FileService {
 
         fileRepository.save(entity);
         return "success";
+    }
+
+
+    @Transactional
+    public String deleteFile(String key) {
+        s3Service.delete(key);
+
+        return "delete";
     }
 }

@@ -36,6 +36,7 @@ class FileRepositoryTest {
         String filestring = "testimage.jpg";
         String filename = "testimage";
         String type = filestring.substring(filestring.lastIndexOf('.')+1);
+        String filepath = "testfilepath";
         Double size = 2.0;
 
         User user = User.builder()
@@ -50,6 +51,7 @@ class FileRepositoryTest {
                 .filename(filename)
                 .type(type)
                 .size(size)
+                .filepath(filepath)
                 .user(user)
                 .build());
 
@@ -61,6 +63,7 @@ class FileRepositoryTest {
         assertThat(file.getFilename()).isEqualTo(filename);
         assertThat(file.getType()).isEqualTo(type);
         assertThat(file.getSize()).isEqualTo(size);
+        assertThat(file.getFilepath()).isEqualTo(filepath);
         assertThat(file.getUser().getUserId()).isEqualTo(user.getUserId());
     }
 

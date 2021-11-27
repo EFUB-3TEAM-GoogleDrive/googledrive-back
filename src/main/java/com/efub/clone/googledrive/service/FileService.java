@@ -42,7 +42,6 @@ public class FileService {
 
     @Transactional
     public String deleteFile(Long userId, Long fileId) throws Exception{
-
         User user = userRepository.findUserByUserId(userId);
 
         if(user == null) {
@@ -54,5 +53,19 @@ public class FileService {
 
         fileRepository.save(file);
         return "success";
+    }
+
+
+    @Transactional
+    public String downloadUrl(Long userId, Long fileId) {
+        User user = userRepository.findUserByUserId(userId);
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+
+        File file = fileRepository.getById(fileId);
+
+        return file.getFilepath();
     }
 }

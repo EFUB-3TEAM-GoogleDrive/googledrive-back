@@ -50,4 +50,8 @@ public class File extends BaseTimeEntity {
         this.user = user;
         this.folder = folder;
     }
+
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
 }

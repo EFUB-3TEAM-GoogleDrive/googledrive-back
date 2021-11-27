@@ -1,0 +1,28 @@
+spring:
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
+  jpa:
+    database: mysql
+    properties:
+      hibernate:
+        dialect:
+          storage_engine: innodb
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  profiles:
+    include: datasource
+multipart:
+  maxFileSize: 5MB
+  maxRequestSize: 5MB
+cloud:
+  aws:
+    s3:
+      bucket: googledrive-file
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: 'false'

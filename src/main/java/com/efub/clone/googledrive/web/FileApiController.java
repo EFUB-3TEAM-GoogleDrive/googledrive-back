@@ -4,7 +4,6 @@ import com.efub.clone.googledrive.service.FileService;
 import com.efub.clone.googledrive.service.S3Service;
 import com.efub.clone.googledrive.web.dto.FileRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,14 +42,15 @@ public class FileApiController {
     }
 
 
-    @DeleteMapping("/files/{fileName}/delete")
+    @DeleteMapping("/files/delete")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Object> deleteFile(
-        @RequestParam(value = "fileName", required = true) String fileName,
+        @RequestParam(value = "fileId", required = true) Long file_id,
         @RequestParam(value = "requestDto") String requestDtoString)
     {
         try {
             FileRequestDto requestDto = new ObjectMapper().readValue(requestDtoString, FileRequestDto.class);
-            return ResponseEntity.ok().body(fileService.deleteFile(fileName));
+            return ResponseEntity.ok().body(fileService.deleteFile(file_id, requestDto));
         } catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");

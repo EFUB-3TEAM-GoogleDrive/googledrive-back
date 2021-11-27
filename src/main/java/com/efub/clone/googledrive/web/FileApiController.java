@@ -44,7 +44,7 @@ public class FileApiController {
                                                @RequestParam(value = "fileId", required = true) Long fileId)
         throws Exception {
             try {
-                return ResponseEntity.ok().body(fileService.downloadUrl(userId, fileId));
+                return ResponseEntity.ok().body("download link: " + fileService.downloadUrl(userId, fileId));
             } catch(Exception e){
                 e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");

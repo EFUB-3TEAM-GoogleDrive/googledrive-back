@@ -25,7 +25,7 @@ public class FileApiController {
         }
     }
 
-    @DeleteMapping("users/{userId}/files/{fileId}/delete")
+    @DeleteMapping("users/{userId}/files/delete")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> deleteFile(@PathVariable Long userId,
                                              @RequestParam(value = "fileId", required = true) Long fileId)

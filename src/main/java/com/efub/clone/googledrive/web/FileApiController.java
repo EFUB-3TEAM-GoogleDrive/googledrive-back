@@ -26,7 +26,7 @@ public class FileApiController {
     }
 
     @DeleteMapping("users/{userId}/files/{fileId}/delete")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> deleteFile(@PathVariable Long userId,
                                              @RequestParam(value = "fileId", required = true) Long fileId)
     {
@@ -36,5 +36,12 @@ public class FileApiController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
         }
+    }
+
+    @GetMapping("users/{userId}/files/{fileId}/download")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> downloadFile()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body("fail");
     }
 }

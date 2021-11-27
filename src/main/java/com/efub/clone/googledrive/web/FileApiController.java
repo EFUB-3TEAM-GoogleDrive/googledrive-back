@@ -1,15 +1,10 @@
 package com.efub.clone.googledrive.web;
 
 import com.efub.clone.googledrive.service.FileService;
-import com.efub.clone.googledrive.web.dto.FileRequestDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -17,18 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileApiController {
     private final FileService fileService;
 
-    @PostMapping("/files")
+    @PostMapping("users/{userId}/files")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> uploadFile(
-            @RequestParam(value = "file", required = true) MultipartFile file,
-            @RequestParam(value = "requestDto") String requestDtoString)
+    public ResponseEntity<Object> uploadFile(@PathVariable Long userId,
+            @RequestParam(value = "file", required = true) MultipartFile file)
     {
         try{
-            FileRequestDto requestDto = new ObjectMapper().readValue(requestDtoString, FileRequestDto.class);
-            return ResponseEntity.ok().body(fileService.uploadFile(file, requestDto));
+            return ResponseEntity.ok().body(fileService.uploadFile(userId, file));
         }catch(Exception e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("invalid user");
         }
     }
 }

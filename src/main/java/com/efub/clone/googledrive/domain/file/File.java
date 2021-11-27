@@ -23,7 +23,7 @@ public class File extends BaseTimeEntity {
 
     private String type;
 
-    private Double size;
+    private Long size;
 
     private Boolean deleteFlag;
 
@@ -40,14 +40,17 @@ public class File extends BaseTimeEntity {
     private Folder folder;
 
     @Builder
-    private File(String filename, String type, Double size, String filepath, User user, Folder folder){
+    private File(String filename, String type, Long size, String filepath, User user, Folder folder){
         this.filename = filename;
         this.type = type;
         this.size = size;
         this.deleteFlag = false;
-        this.openedDate = this.getCreatedDate();
         this.filepath = filepath;
         this.user = user;
         this.folder = folder;
+    }
+
+    public void setOpenedDate() {
+        this.openedDate = getCreatedDate();
     }
 }

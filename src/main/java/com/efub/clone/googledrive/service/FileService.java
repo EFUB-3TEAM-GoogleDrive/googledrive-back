@@ -41,17 +41,16 @@ public class FileService {
 
 
     @Transactional
-    public String deleteFile(Long file_id, FileRequestDto requestDto) throws Exception{
+    public String deleteFile(Long userId, Long fileId) throws Exception{
 
-        User user = userRepository.findUserByUserId(requestDto.getUserId());
+        User user = userRepository.findUserByUserId(userId);
 
         if(user == null) {
             throw new IllegalArgumentException();
         }
 
-        File file = fileRepository.getById(file_id);
+        File file = fileRepository.getById(fileId);
         file.setDeleteFlag(true);
-        System.out.println(file.getDeleteFlag());
 
         fileRepository.save(file);
         return "success";

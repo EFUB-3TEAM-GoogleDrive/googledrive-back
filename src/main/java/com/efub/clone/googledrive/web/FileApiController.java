@@ -25,13 +25,13 @@ public class FileApiController {
         }
     }
 
-    @DeleteMapping("users/{userId}/files/delete")
+    @DeleteMapping("users/{userId}/files/{fileId}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Object> deleteFile(@PathVariable Long userId,
-                                             @RequestParam(value = "fileId", required = true) Long file_id)
+                                             @RequestParam(value = "fileId", required = true) Long fileId)
     {
         try {
-            return ResponseEntity.ok().body(fileService.deleteFile(userId, file_id));
+            return ResponseEntity.ok().body(fileService.deleteFile(userId, fileId));
         } catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");

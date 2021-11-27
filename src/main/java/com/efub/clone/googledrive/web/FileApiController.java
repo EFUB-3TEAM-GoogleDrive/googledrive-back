@@ -38,10 +38,16 @@ public class FileApiController {
         }
     }
 
-    @GetMapping("users/{userId}/files/{fileId}/download")
+    @GetMapping("users/{userId}/files/download")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> downloadFile()
-    {
-        return ResponseEntity.status(HttpStatus.OK).body("fail");
-    }
+    public ResponseEntity<Object> downloadFile(@PathVariable Long userId,
+                                               @RequestParam(value = "fileId", required = true) Long fileId)
+        throws Exception {
+            try {
+                return ResponseEntity.ok().body(fileService.downloadUrl(userId, fileId));
+            } catch(Exception e){
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+            }
+        }
 }

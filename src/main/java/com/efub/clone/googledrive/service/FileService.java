@@ -44,9 +44,19 @@ public class FileService {
 
 
     @Transactional
-    public String deleteFile(String key) {
-        s3Service.delete(key);
+    public String deleteFile(Long file_id, FileRequestDto requestDto) throws Exception{
 
-        return "delete";
+        User user = userRepository.findUserByUserId(requestDto.getUserId());
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+
+        File file = fileRepository.getById(file_id);
+        file.setDeleteFlag(true);
+        System.out.println(file.getDeleteFlag());
+
+        fileRepository.save(file);
+        return "success";
     }
 }

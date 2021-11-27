@@ -106,21 +106,5 @@ public class S3Service {
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
     }
 
-
-    public void delete(String FileName) {
-        try {
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(this.bucket, FileName);
-
-            this.s3Client.deleteObject(deleteObjectRequest);
-            System.out.println(String.format("[%s] deletion complete", FileName));
-
-        } catch (AmazonServiceException e) {
-            e.printStackTrace();
-
-        } catch (SdkClientException e){
-            e.printStackTrace();
-        }
-
-    }
 }
 

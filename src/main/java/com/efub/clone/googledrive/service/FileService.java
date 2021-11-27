@@ -4,7 +4,6 @@ import com.efub.clone.googledrive.domain.file.File;
 import com.efub.clone.googledrive.domain.file.FileRepository;
 import com.efub.clone.googledrive.domain.user.User;
 import com.efub.clone.googledrive.domain.user.UserRepository;
-import com.efub.clone.googledrive.web.dto.FileRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +18,9 @@ public class FileService {
     private final S3Service s3Service;
 
     @Transactional
-    public String uploadFile(
-            MultipartFile file,
-            FileRequestDto requestDto
-    ) throws Exception{
+    public String uploadFile(Long userId, MultipartFile file) throws Exception{
         String filepath = s3Service.upload(file);
-        User user = userRepository.findUserByUserId(requestDto.getUserId());
+        User user = userRepository.findUserByUserId(userId);
 
         if(user == null){
             throw new IllegalArgumentException();
@@ -33,12 +29,13 @@ public class FileService {
         File entity = File.builder()
                 .filename(file.getOriginalFilename())
                 .type(file.getContentType())
-                .size(requestDto.getSize())
+                .size(file.getSize())
                 .filepath(filepath)
                 .user(user)
                 .build();
-
         fileRepository.save(entity);
+        entity.setOpenedDate();
+
         return "success";
     }
 

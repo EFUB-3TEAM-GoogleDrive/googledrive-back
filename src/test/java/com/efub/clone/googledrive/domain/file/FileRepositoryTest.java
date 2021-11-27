@@ -37,7 +37,7 @@ class FileRepositoryTest {
         String filename = "testimage";
         String type = filestring.substring(filestring.lastIndexOf('.')+1);
         String filepath = "testfilepath";
-        Double size = 2.0;
+        Long size = Long.valueOf(2);
 
         User user = User.builder()
                 .userName("testuser")
@@ -83,7 +83,7 @@ class FileRepositoryTest {
         fileRepository.save(File.builder()
                 .filename("testimg")
                 .type("jpg")
-                .size(2.0)
+                .size(Long.valueOf(2))
                 .user(user)
                 .build());
 

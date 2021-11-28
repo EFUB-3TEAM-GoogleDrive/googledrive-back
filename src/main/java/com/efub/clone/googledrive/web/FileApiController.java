@@ -24,4 +24,42 @@ public class FileApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("invalid user");
         }
     }
+
+    @GetMapping("users/{userId}/files")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> getFiles(@PathVariable Long userId)
+    {
+        try{
+            return ResponseEntity.ok().body(fileService.getFiles(userId));
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("invalid user");
+        }
+    }
+
+    @DeleteMapping("users/{userId}/files/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> deleteFile(@PathVariable Long userId,
+                                             @RequestParam(value = "fileId", required = true) Long fileId)
+    {
+        try {
+            return ResponseEntity.ok().body(fileService.deleteFile(userId, fileId));
+        } catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+        }
+    }
+
+    @GetMapping("users/{userId}/files/download")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> downloadFile(@PathVariable Long userId,
+                                               @RequestParam(value = "fileId", required = true) Long fileId)
+        throws Exception {
+            try {
+                return ResponseEntity.ok().body("download link: " + fileService.downloadUrl(userId, fileId));
+            } catch(Exception e){
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+            }
+        }
 }

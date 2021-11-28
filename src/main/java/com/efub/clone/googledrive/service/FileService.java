@@ -4,10 +4,18 @@ import com.efub.clone.googledrive.domain.file.File;
 import com.efub.clone.googledrive.domain.file.FileRepository;
 import com.efub.clone.googledrive.domain.user.User;
 import com.efub.clone.googledrive.domain.user.UserRepository;
+import com.efub.clone.googledrive.web.dto.FileResponseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
+import java.util.Optional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Service
@@ -36,5 +44,55 @@ public class FileService {
         entity.setOpenedDate();
 
         return "success";
+    }
+
+    @Transactional(readOnly = true)
+    public List<FileResponseListDto> getFiles(Long userId) throws Exception{
+        User user = userRepository.findUserByUserId(userId);
+
+        if(user == null){
+            throw new IllegalArgumentException();
+        }
+
+        List<FileResponseListDto> files = fileRepository.findAllByUserUserIdAndDeleteFlag(userId, false)
+                .stream()
+                .map(FileResponseListDto::new)
+                .collect(Collectors.toList());
+
+        return files;
+    }
+
+
+    @Transactional
+    public String deleteFile(Long userId, Long fileId) throws Exception{
+        User user = userRepository.findUserByUserId(userId);
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+
+        File file = fileRepository.getById(fileId);
+        file.setDeleteFlag(true);
+
+        fileRepository.save(file);
+        return "success";
+    }
+
+
+    @Transactional
+    public String downloadUrl(Long userId, Long fileId) throws FileNotFoundException {
+        User user = userRepository.findUserByUserId(userId);
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+
+        File file = fileRepository.findFileByFileId(fileId);
+
+        if(file == null || file.getDeleteFlag()) {
+            throw new FileNotFoundException();
+        }
+
+        return file.getFilepath();
     }
 }

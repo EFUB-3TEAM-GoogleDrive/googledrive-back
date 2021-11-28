@@ -1,7 +1,5 @@
 package com.efub.clone.googledrive.service;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -90,21 +88,5 @@ public class S3Service {
         }
         else return null;
     }
-
-
-    public ResponseEntity<byte[]> getObject (String FileName) throws IOException {
-        S3Object s3Object = s3Client.getObject(new GetObjectRequest(this.bucket, FileName));
-        S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(objectInputStream);
-
-        String fileName = URLEncoder.encode(FileName, "UTF-8").replaceAll("\\+", "%20");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.IMAGE_JPEG);
-        httpHeaders.setContentLength(bytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
-
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-    }
-
 }
 

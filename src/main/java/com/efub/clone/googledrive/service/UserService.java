@@ -4,7 +4,6 @@ import com.efub.clone.googledrive.domain.file.FileRepository;
 import com.efub.clone.googledrive.domain.folder.FolderRepository;
 import com.efub.clone.googledrive.domain.user.User;
 import com.efub.clone.googledrive.domain.user.UserRepository;
-import com.efub.clone.googledrive.web.dto.FolderResponseListDto;
 import com.efub.clone.googledrive.web.dto.ResponseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

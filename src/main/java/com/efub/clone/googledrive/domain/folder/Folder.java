@@ -33,4 +33,13 @@ public class Folder {
         this.user = user;
         this.deleteFlag = false;
     }
+
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+        deletedDate = LocalDateTime.now();
+    }
+
+    public void setFolderId(Long folderId) {
+        this.folderId = folderId;
+    }
 }

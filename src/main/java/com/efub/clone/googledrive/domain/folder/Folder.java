@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -22,9 +23,14 @@ public class Folder {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private Boolean deleteFlag;
+
+    private LocalDateTime deletedDate;
+
     @Builder
     private Folder(String folderName, User user){
         this.folderName = folderName;
         this.user = user;
+        this.deleteFlag = false;
     }
 }

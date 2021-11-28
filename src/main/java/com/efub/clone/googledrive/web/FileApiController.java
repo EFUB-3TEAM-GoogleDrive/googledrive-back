@@ -25,6 +25,18 @@ public class FileApiController {
         }
     }
 
+    @GetMapping("users/{userId}/files")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> getFiles(@PathVariable Long userId)
+    {
+        try{
+            return ResponseEntity.ok().body(fileService.getFiles(userId));
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("invalid user");
+        }
+    }
+
     @DeleteMapping("users/{userId}/files/delete")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> deleteFile(@PathVariable Long userId,

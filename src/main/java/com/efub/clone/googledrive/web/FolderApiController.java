@@ -22,6 +22,17 @@ public class FolderApiController {
         }
     }
 
+    @PostMapping("users/{userId}/folders")
+    public ResponseEntity<Object> createFolders(@PathVariable Long userId,
+                                                @RequestParam(value = "folderName") String folderName)
+    {
+        try {
+            return ResponseEntity.ok().body(folderService.createFolder(userId, folderName));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("invalid user");
+        }
+    }
+
     @DeleteMapping("users/{userId}/folders/delete")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> deleteFolder(@PathVariable Long userId,

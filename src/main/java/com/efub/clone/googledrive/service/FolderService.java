@@ -30,6 +30,20 @@ public class FolderService {
     }
 
     @Transactional
+    public String createFolder(Long userId, String folderName) {
+        CheckInvalidUser(userId);
+
+        Folder entity = Folder.builder()
+                .folderName(folderName)
+                .user(userRepository.findUserByUserId(userId))
+                .build();
+
+        folderRepository.save(entity);
+
+        return "폴더가 생성되었습니다.";
+    }
+
+    @Transactional
     public String deleteFolder(Long userId, Long folderId) throws Exception{
         CheckInvalidUser(userId);
         CheckInvalidFolder(folderId);

@@ -61,4 +61,8 @@ public class File extends BaseTimeEntity {
         this.deleteFlag = deleteFlag;
         deletedDate = LocalDateTime.now();
     }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
+    }
 }

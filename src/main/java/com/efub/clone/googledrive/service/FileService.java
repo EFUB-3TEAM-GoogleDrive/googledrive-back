@@ -89,7 +89,11 @@ public class FileService {
 
         File file = fileRepository.findFileByFileId(fileId);
 
-        file.getFolder().setFolderId(folderId);
+        if(file.getFolder() == null){
+            file.setFolder(folderRepository.findFolderByFolderId(8L));
+        }
+
+        file.setFolder(folderRepository.findFolderByFolderId(folderId));
         fileRepository.save(file);
 
         return new FileResponseDto(file);

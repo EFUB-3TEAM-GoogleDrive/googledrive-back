@@ -29,6 +29,8 @@ public class File extends BaseTimeEntity {
 
     private LocalDateTime openedDate;
 
+    private LocalDateTime deletedDate;
+
     private String filepath;
 
     @ManyToOne
@@ -57,5 +59,6 @@ public class File extends BaseTimeEntity {
 
     public void setDeleteFlag(Boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
+        deletedDate = LocalDateTime.now();
     }
 }

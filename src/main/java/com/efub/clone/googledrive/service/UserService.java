@@ -22,14 +22,14 @@ public class UserService {
     private final FolderRepository folderRepository;
 
     @Transactional(readOnly = true)
-    public List<ResponseListDto> getDeleted(Long userId) throws Exception{
+    public List<ResponseListDto> getDeleted(Long userId) throws IllegalArgumentException {
         User user = userRepository.findUserByUserId(userId);
 
         if(user == null){
             throw new IllegalArgumentException();
         }
 
-        List<ResponseListDto> deletedList = new ArrayList<ResponseListDto>();
+        List<ResponseListDto> deletedList = new ArrayList<>();
 
         deletedList.addAll(folderRepository.findAllByUserUserIdAndDeleteFlag(userId, true)
                 .stream()

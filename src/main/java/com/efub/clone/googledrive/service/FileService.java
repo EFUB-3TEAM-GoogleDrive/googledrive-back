@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.util.Optional;
+
 
 @RequiredArgsConstructor
 @Service
@@ -57,17 +60,17 @@ public class FileService {
 
 
     @Transactional
-    public String downloadUrl(Long userId, Long fileId) {
+    public String downloadUrl(Long userId, Long fileId) throws FileNotFoundException {
         User user = userRepository.findUserByUserId(userId);
 
         if(user == null) {
             throw new IllegalArgumentException();
         }
 
-        File file = fileRepository.getById(fileId);
+        File file = fileRepository.findFileByFileId(fileId);
 
-        if(file.getDeleteFlag()) {
-            throw new IllegalArgumentException();
+        if(file == null || file.getDeleteFlag()) {
+            throw new FileNotFoundException();
         }
 
         return file.getFilepath();

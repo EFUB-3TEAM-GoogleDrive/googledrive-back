@@ -15,7 +15,7 @@ public class FileApiController {
     @PostMapping("users/{userId}/files")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> uploadFile(@PathVariable Long userId,
-            @RequestParam(value = "file", required = true) MultipartFile file)
+            @RequestParam(value = "file") MultipartFile file)
     {
         try{
             return ResponseEntity.ok().body(fileService.uploadFile(userId, file));
@@ -40,7 +40,7 @@ public class FileApiController {
     @DeleteMapping("users/{userId}/files/delete")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> deleteFile(@PathVariable Long userId,
-                                             @RequestParam(value = "fileId", required = true) Long fileId)
+                                             @RequestParam(value = "fileId") Long fileId)
     {
         try {
             return ResponseEntity.ok().body(fileService.deleteFile(userId, fileId));
@@ -53,13 +53,26 @@ public class FileApiController {
     @GetMapping("users/{userId}/files/download")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> downloadFile(@PathVariable Long userId,
-                                               @RequestParam(value = "fileId", required = true) Long fileId)
-        throws Exception {
+                                               @RequestParam(value = "fileId") Long fileId) {
             try {
                 return ResponseEntity.ok().body("download link: " + fileService.downloadUrl(userId, fileId));
             } catch(Exception e){
                 e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일을 찾을 수 없습니다.");
             }
+    }
+
+    @PatchMapping("users/{userId}/files/{fileId}/folders")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> moveFolderOfFile(@PathVariable Long userId,
+                                                   @PathVariable Long fileId,
+                                                   @RequestParam(value = "folderId") Long folderId)
+    {
+        try {
+            return ResponseEntity.ok().body(fileService.moveFolder(userId, fileId, folderId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("존재하지 않는 폴더입니다.");
         }
+    }
 }

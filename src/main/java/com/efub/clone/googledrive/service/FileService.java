@@ -66,6 +66,10 @@ public class FileService {
 
         File file = fileRepository.getById(fileId);
 
+        if(file.getDeleteFlag()) {
+            throw new IllegalArgumentException();
+        }
+
         return file.getFilepath();
     }
 }

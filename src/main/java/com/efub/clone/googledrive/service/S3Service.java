@@ -9,19 +9,13 @@ import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -76,15 +70,14 @@ public class S3Service {
                     return null;
                 }
             }
-            SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
+            SimpleDateFormat date = new SimpleDateFormat("yyyyMMddHHmmss");
             String fileName = FilenameUtils.getBaseName(file.getOriginalFilename()) + "-" + date.format(new Date()) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
 
 
             s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
-            String filePath = "http://" + CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
-            return filePath;
+            return "http://" + CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
         }
         else return null;
     }

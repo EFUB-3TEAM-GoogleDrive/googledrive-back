@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Long> {
     List<Folder> findAllByUserUserIdAndDeleteFlag(Long userId, Boolean deleteFlag);
+    Folder findFolderByFolderId(Long folderId);
 }

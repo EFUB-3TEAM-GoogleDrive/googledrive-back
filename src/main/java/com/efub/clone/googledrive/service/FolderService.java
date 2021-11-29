@@ -1,19 +1,15 @@
 package com.efub.clone.googledrive.service;
 
+import com.efub.clone.googledrive.domain.folder.Folder;
 import com.efub.clone.googledrive.domain.folder.FolderRepository;
 import com.efub.clone.googledrive.domain.user.User;
 import com.efub.clone.googledrive.domain.user.UserRepository;
-import com.efub.clone.googledrive.web.dto.FileResponseListDto;
 import com.efub.clone.googledrive.web.dto.FolderResponseListDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,18 +20,55 @@ public class FolderService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<FolderResponseListDto> getFolders(Long userId) throws Exception{
-        User user = userRepository.findUserByUserId(userId);
+    public List<FolderResponseListDto> getFolders(Long userId) throws IllegalArgumentException{
+        CheckInvalidUser(userId);
 
-        if(user == null){
-            throw new IllegalArgumentException();
-        }
-
-        List<FolderResponseListDto> files = folderRepository.findAllByUserUserIdAndDeleteFlag(userId, false)
+        return folderRepository.findAllByUserUserIdAndDeleteFlag(userId, false)
                 .stream()
                 .map(FolderResponseListDto::new)
                 .collect(Collectors.toList());
+    }
 
-        return files;
+    @Transactional
+    public String createFolder(Long userId, String folderName) {
+        CheckInvalidUser(userId);
+
+        Folder entity = Folder.builder()
+                .folderName(folderName)
+                .user(userRepository.findUserByUserId(userId))
+                .build();
+
+        folderRepository.save(entity);
+
+        return "폴더가 생성되었습니다.";
+    }
+
+    @Transactional
+    public String deleteFolder(Long userId, Long folderId) throws Exception{
+        CheckInvalidUser(userId);
+        CheckInvalidFolder(folderId);
+
+        Folder folder = folderRepository.findFolderByFolderId(folderId);
+        folder.setDeleteFlag(true);
+        folderRepository.save(folder);
+
+        return "폴더가 휴지통으로 이동되었습니다.";
+    }
+
+
+    private void CheckInvalidUser(Long userId) throws IllegalArgumentException {
+        User user = userRepository.findUserByUserId(userId);
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void CheckInvalidFolder(Long folderId) throws FileNotFoundException {
+        Folder folder = folderRepository.findFolderByFolderId(folderId);
+
+        if(folder == null || folder.getDeleteFlag()) {
+            throw new FileNotFoundException();
+        }
     }
 }

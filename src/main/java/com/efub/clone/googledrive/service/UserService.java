@@ -4,7 +4,6 @@ import com.efub.clone.googledrive.domain.file.FileRepository;
 import com.efub.clone.googledrive.domain.folder.FolderRepository;
 import com.efub.clone.googledrive.domain.user.User;
 import com.efub.clone.googledrive.domain.user.UserRepository;
-import com.efub.clone.googledrive.web.dto.FolderResponseListDto;
 import com.efub.clone.googledrive.web.dto.ResponseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,14 +22,14 @@ public class UserService {
     private final FolderRepository folderRepository;
 
     @Transactional(readOnly = true)
-    public List<ResponseListDto> getDeleted(Long userId) throws Exception{
+    public List<ResponseListDto> getDeleted(Long userId) throws IllegalArgumentException {
         User user = userRepository.findUserByUserId(userId);
 
         if(user == null){
             throw new IllegalArgumentException();
         }
 
-        List<ResponseListDto> deletedList = new ArrayList<ResponseListDto>();
+        List<ResponseListDto> deletedList = new ArrayList<>();
 
         deletedList.addAll(folderRepository.findAllByUserUserIdAndDeleteFlag(userId, true)
                 .stream()

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ class FileRepositoryTest {
     }
 
     @Test
-    public void 파일저장_불러오기(){
+    public void 파일저장_불러오기() throws DataIntegrityViolationException {
         //given
         String filestring = "testimage.jpg";
         String filename = "testimage";

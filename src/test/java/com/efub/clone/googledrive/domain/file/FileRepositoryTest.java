@@ -32,7 +32,7 @@ class FileRepositoryTest {
     }
 
     @Test
-    public void 파일저장_불러오기() throws DataIntegrityViolationException {
+    public void 파일저장_불러오기(){
         //given
         String filestring = "testimage.jpg";
         String filename = "testimage";
@@ -83,6 +83,7 @@ class FileRepositoryTest {
 
         fileRepository.save(File.builder()
                 .filename("testimg")
+                .filepath("testimg.jpg")
                 .type("jpg")
                 .size(Long.valueOf(2))
                 .user(user)
